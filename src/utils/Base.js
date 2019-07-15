@@ -1,13 +1,40 @@
 var Base = {}
 
-Base.traverse = (list) => {
-    let arr = []
-    for(let i in list) {
-        arr.push(list[i])
-        if(list[i].children) {
-            traverse(list[i].children)
+/**
+ * 树形结构转为list
+ */
+Base.treeToList = (list) => { 
+    var tree = Base.clone(list)
+    var queen = [];
+    var out = [];
+    queen = queen.concat(tree);
+    while(queen.length) {
+        var first = queen.shift();
+        if (first.children) {
+            queen = queen.concat(first.children)
+            delete first['children'];
+        }
+      
+      out.push(first);
+    }
+    return out;
+}
+
+/**
+ * 深度克隆数组和对象
+ */
+Base.clone = (value) => {
+    return JSON.parse(JSON.stringify(value))
+}
+/**
+ * 遍历树
+ */
+Base.traverseTree = (tree, key, value) => {
+    for(var i in tree){
+        tree[i][key] = value;
+        if(tree[i].children){
+            Base.traverseTree(tree[i].children, key, value)
         }
     }
-    console.log(arr)
 }
 export default Base

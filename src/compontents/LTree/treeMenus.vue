@@ -31,6 +31,16 @@
 				}
 			}
 		},
+		watch: {
+			data: {
+				deep: true,
+				handler() {
+					this.$nextTick(() => {
+						
+					})
+				}
+			}
+		},
 		methods: {
 			open(value) {
 				if(this.showList.indexOf(value) == -1) {
@@ -40,14 +50,7 @@
 				}
 			},
 			selectItem(item, index) {
-				console.log(Base.traverse(this.list))
-				this.list.forEach(e => {
-					this.$set(e, '_selected', false)
-				});
-				this.$nextTick(() => {
-					item._selected = true
-					this.check = item
-				})
+				this.$emit('selectItem', item, index)
 			}
 		}
 	}
