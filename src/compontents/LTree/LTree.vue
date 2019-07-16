@@ -1,6 +1,6 @@
 <template>
     <div>
-        <tree-menus ref="LTree" :list="data" @selectItem="selectItem" @open="open" v-if="treeShow"></tree-menus>
+        <tree-menus ref="LTree" :list="data" @selectItem="_selectItem" @open="_open" v-if="treeShow"></tree-menus>
     </div>
 </template>
 
@@ -17,8 +17,13 @@ export default {
             treeShow: true
         }
     },
+    computed: {
+        _type() {
+            console.log(this.$el.hasAttribute('radio'))
+        }
+    },
     methods: {
-        selectItem(item, index) {
+        _selectItem(item, index) {
             Base.traverseTree(this.data, '_selected', false)
             item._selected = true
             this.check = item
@@ -27,15 +32,17 @@ export default {
                 this.treeShow = true
             })
         },
-        open(item, index) {
+        _open(item, index) {
             if(item._open) {
                 this.$set(item, '_open', false)
             }else {
                 this.$set(item, '_open', true)
             }
         },
+        /**
+         * 获取选中节点
+         */
         getSelectItem() {
-            // console.log(this.check)
             return this.check
         }
     }
