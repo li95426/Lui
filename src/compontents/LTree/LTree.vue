@@ -1,6 +1,6 @@
 <template>
     <div>
-        <tree-menus v-if="treeShow" :list="data" @selectItem="selectItem"></tree-menus>
+        <tree-menus :list="data" @selectItem="selectItem" @open="open" v-if="treeShow"></tree-menus>
     </div>
 </template>
 
@@ -19,11 +19,20 @@ export default {
     },
     methods: {
         selectItem(item, index) {
-            this.treeShow = false
             Base.traverseTree(this.data, '_selected', false)
             item._selected = true
             this.check = item
-            this.treeShow = true
+            this.treeShow = false
+            this.$nextTick(() => {
+                this.treeShow = true
+            })
+        },
+        open(item, index) {
+            if(item.open) {
+                this.$set(item, 'open', false)
+            }else {
+                this.$set(item, 'open', true)
+            }
         }
     }
 }

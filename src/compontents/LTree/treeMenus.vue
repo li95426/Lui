@@ -2,10 +2,10 @@
   	<ul class="LTree">
 		<li class="LTree-Item" v-for="(item, index) in list " :key="index">
 			<p class="LTree-Content">
-				<span @click="open(index)" :class="['LTree-Switch', item.children?(childrenShow(index)?'LTree-Switch-open':'LTree-Switch-close'):'LTree-Switch-blank']" ></span><!--v-html="item.children?(childrenShow(index)?'-':'+'):''"-->
+				<span @click="open(item, index)" :class="['LTree-Switch', item.children?(item.open?'LTree-Switch-open':'LTree-Switch-close'):'LTree-Switch-blank']" ></span>
 				<span :class="['LTree-Name', item._selected?'LTree-Name-check':'']" @click="selectItem(item, index)">{{item.name}}</span>
 			</p>
-			<tree-menus v-show="childrenShow(index)" :list="item.children"></tree-menus>
+			<tree-menus v-show="item.open" :list="item.children" @open="open" @selectItem="selectItem"></tree-menus>
 		</li>
   	</ul>
 </template>
@@ -24,30 +24,14 @@
 				checkIndex: null
 			}
 		},
-		computed: {
-			childrenShow() {
-				return function(value) {
-					return this.showList.indexOf(value) >= 0
-				}
-			}
-		},
-		watch: {
-			data: {
-				deep: true,
-				handler() {
-					this.$nextTick(() => {
-						
-					})
-				}
-			}
-		},
 		methods: {
-			open(value) {
-				if(this.showList.indexOf(value) == -1) {
-					this.showList.push(value)
-				}else {
-					this.showList.splice(this.showList.indexOf(value), 1)
-				}
+			open(item, index) {
+				// if(this.showList.indexOf(value) == -1) {
+				// 	this.showList.push(value)
+				// }else {
+				// 	this.showList.splice(this.showList.indexOf(value), 1)
+				// }
+				this.$emit('open', item, index)
 			},
 			selectItem(item, index) {
 				this.$emit('selectItem', item, index)
