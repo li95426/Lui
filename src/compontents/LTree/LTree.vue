@@ -1,6 +1,6 @@
 <template>
     <div>
-        <tree-menus :list="data" @selectItem="selectItem" @open="open" v-if="treeShow"></tree-menus>
+        <tree-menus ref="LTree" :list="data" @selectItem="selectItem" @open="open" v-if="treeShow"></tree-menus>
     </div>
 </template>
 
@@ -22,17 +22,21 @@ export default {
             Base.traverseTree(this.data, '_selected', false)
             item._selected = true
             this.check = item
-            this.treeShow = false
+            this.treeShow = false //强制渲染组件
             this.$nextTick(() => {
                 this.treeShow = true
             })
         },
         open(item, index) {
-            if(item.open) {
-                this.$set(item, 'open', false)
+            if(item._open) {
+                this.$set(item, '_open', false)
             }else {
-                this.$set(item, 'open', true)
+                this.$set(item, '_open', true)
             }
+        },
+        getSelectItem() {
+            // console.log(this.check)
+            return this.check
         }
     }
 }

@@ -1,6 +1,7 @@
 <template>
     <div id="app">
-		<l-tree :data="treeList"></l-tree>
+		<l-tree ref="tree" :data="treeList"></l-tree>
+        <button @click="getSelectItem">获取选中项</button>
     </div>
 </template>
 
@@ -43,7 +44,13 @@ export default {
                 }
             ]
 		}
-	}
+    },
+    methods: {
+        getSelectItem() {
+            console.log(this.$refs.tree.getSelectItem())
+        }
+    }
+    
 }
 </script>
 
