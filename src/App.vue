@@ -1,6 +1,6 @@
 <template>
     <div id="app">
-		<l-tree ref="tree" radio :data="treeList"></l-tree>
+		<l-tree ref="tree" checkbox :data="treeList"></l-tree>
         <button @click="getSelectItem">获取选中项</button>
     </div>
 </template>
